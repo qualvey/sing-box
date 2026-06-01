@@ -25,9 +25,7 @@ on:
           - publish-android
   push:
     branches:
-      - stable
-      - testing
-      - unstable
+      - v2ray_api
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}-${{ inputs.build }}
