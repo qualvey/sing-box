@@ -121,7 +121,7 @@ jobs:
         run: |
           set -xeuo pipefail
           if [[ "${{ matrix.naive }}" == "true" ]]; then
-            TAGS="$(cat release/DEFAULT_BUILD_TAGS),with_musl"
+            TAGS="$(cat release/DEFAULT_BUILD_TAGS),with_musl,with_v2ray_api"
           else
             TAGS=$(cat release/DEFAULT_BUILD_TAGS_OTHERS)
           fi
