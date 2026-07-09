@@ -219,6 +219,8 @@ jobs:
   upload:
     name: Upload builds
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # 必须赋予写内容权限，否则无法自动创建和修改 Release
     needs:
       - calculate_version
       - build
@@ -241,3 +243,17 @@ jobs:
         if: github.event_name != 'push'
         run: |-
           ls dist | xargs -I {} curl -F "package=@dist/{}" https://${{ secrets.FURY_TOKEN }}@push.fury.io/sagernet/
+      # 新增：自动创建 GitHub Release 并上传包文件
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: v${{ needs.calculate_version.outputs.version }}
+          name: Release v${{ needs.calculate_version.outputs.version }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/*.deb
+            dist/*.rpm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
