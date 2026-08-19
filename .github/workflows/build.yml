@@ -35,6 +35,8 @@ on:
       - stable
       - testing
       - unstable
+    tags:
+      - 'v*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}-${{ inputs.build }}
